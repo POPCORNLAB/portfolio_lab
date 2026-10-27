@@ -423,6 +423,18 @@ svg {
   word-break: break-word;
 }
 
+/* ===== 맨 아래 관리자 링크 ===== */
+.site-foot {
+  margin-top: 24px;
+  text-align: center;
+}
+.site-foot a {
+  font-size: 12px;
+  color: var(--gray-light);
+  text-decoration: none;
+}
+.site-foot a:hover { color: var(--blue); }
+
 /* ===== 화면 폭에 따라 ===== */
 @media (max-width: 1100px) {
   .cards { grid-template-columns: repeat(2, 1fr); }

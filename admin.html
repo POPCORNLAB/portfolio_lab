@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>관리자 | Portfolio</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 관리자 화면에만 쓰는 모양 (색·글꼴은 style.css 것을 그대로 쓴다) */
+    .admin .sheet { display: block; padding: 40px 48px; margin-bottom: 24px; }
+    .admin .section-title { font-size: 26px; margin-bottom: 24px; }
+    .hidden { display: none !important; }
+
+    .admin-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .admin-top .section-title { margin-bottom: 0; }
+    .admin-top p { color: var(--gray); font-size: 14px; }
+
+    .admin-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+    .admin-nav a {
+      font-size: 13px; font-weight: 700; color: var(--blue); text-decoration: none;
+      background: var(--blue-soft); padding: 6px 14px; border-radius: 999px;
+    }
+
+    .login-box { max-width: 420px; margin: 40px auto; }
+
+    .fields { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px 18px; }
+    .fields .wide { grid-column: 1 / -1; }
+    .field label {
+      display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.05em;
+      color: var(--gray); margin-bottom: 6px;
+    }
+    .field input[type="text"], .field input[type="email"], .field input[type="password"],
+    .field input[type="number"], .field textarea {
+      width: 100%; font: inherit; font-size: 14px; padding: 10px 12px;
+      border: 1px solid var(--line); border-radius: 10px; background: #fafbfc;
+    }
+    .field textarea { min-height: 84px; resize: vertical; }
+    .field input:focus, .field textarea:focus { outline: none; border-color: var(--blue); background: #fff; }
+    .field input[type="file"] { font: inherit; font-size: 13px; }
+    .hint { font-size: 12px; color: var(--gray-light); margin-top: 4px; }
+    .current-file { font-size: 13px; margin-top: 6px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .current-file a { color: var(--blue); word-break: break-all; }
+
+    .btn {
+      font: inherit; font-size: 14px; font-weight: 700; padding: 10px 20px;
+      border-radius: 10px; border: 1px solid var(--line); background: #fff;
+      color: var(--text); cursor: pointer;
+    }
+    .btn:hover { border-color: var(--blue); color: var(--blue); }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+    .btn-primary { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .btn-primary:hover { color: #fff; filter: brightness(1.08); }
+    .btn-danger { color: #e11d48; border-color: #fecdd3; }
+    .btn-danger:hover { color: #fff; background: #e11d48; border-color: #e11d48; }
+    .btn-small { font-size: 12px; padding: 5px 10px; border-radius: 8px; }
+
+    .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-top: 20px; }
+    .msg { font-size: 13px; min-height: 1.4em; }
+    .msg.ok { color: #059669; }
+    .msg.err { color: #e11d48; }
+
+    .photo-preview { width: 96px; height: 96px; margin: 0 0 8px; border-radius: 20px; }
+
+    .row-list { display: flex; flex-direction: column; gap: 10px; }
+    .row {
+      display: flex; align-items: center; gap: 14px;
+      border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px;
+    }
+    .row-thumb { flex: none; width: 72px; height: 46px; border-radius: 8px; background: #d9dde3; overflow: hidden; }
+    .row-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .row-main { flex: 1; min-width: 0; }
+    .row-main .card-meta { font-size: 12px; }
+    .row-main strong { display: block; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row-main p { font-size: 13px; color: var(--gray); word-break: break-word; }
+    .row-likes { flex: none; font-size: 13px; color: #e11d48; font-weight: 700; }
+    .row-buttons { flex: none; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+
+    .edit-box { border: 1px solid var(--blue); border-radius: 16px; padding: 24px; margin-bottom: 20px; background: #fbfcff; }
+    .edit-box h3 { font-size: 16px; margin-bottom: 16px; }
+
+    @media (max-width: 700px) {
+      .admin .sheet { padding: 28px 20px; }
+      .fields { grid-template-columns: 1fr; }
+      .row { flex-wrap: wrap; }
+      .row-buttons { width: 100%; justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page admin">
+
+    <!-- 로그인 화면 -->
+    <section class="sheet login-box" id="login-view">
+      <h2 class="section-title">ADMIN LOGIN</h2>
+      <div class="field">
+        <label for="login-email">이메일</label>
+        <input type="email" id="login-email" autocomplete="username">
+      </div>
+      <div class="field" style="margin-top: 14px;">
+        <label for="login-password">비밀번호</label>
+        <input type="password" id="login-password" autocomplete="current-password">
+      </div>
+      <div class="actions">
+        <button type="button" class="btn btn-primary" id="login-button">로그인</button>
+        <span class="msg err" id="login-msg"></span>
+      </div>
+      <p class="hint" style="margin-top: 20px;"><a href="index.html">← 방문자 화면으로</a></p>
+    </section>
+
+    <!-- 관리자가 아닌 사람 -->
+    <section class="sheet login-box hidden" id="denied-view">
+      <h2 class="section-title">ADMIN</h2>
+      <p>관리자만 쓸 수 있어요.</p>
+      <p class="hint" id="denied-email"></p>
+      <div class="actions">
+        <button type="button" class="btn" data-logout>로그아웃</button>
+        <a href="index.html" class="hint">방문자 화면으로</a>
+      </div>
+    </section>
+
+    <!-- 관리자 화면 -->
+    <div id="admin-view" class="hidden">
+
+      <section class="sheet">
+        <div class="admin-top">
+          <h2 class="section-title">ADMIN</h2>
+          <div class="actions" style="margin-top: 0;">
+            <p id="admin-email"></p>
+            <a class="btn" href="index.html" target="_blank" rel="noopener" style="text-decoration: none;">방문자 화면 보기</a>
+            <button type="button" class="btn" data-logout>로그아웃</button>
+          </div>
+        </div>
+        <nav class="admin-nav">
+          <a href="#profile-section">프로필</a>
+          <a href="#projects-section">포트폴리오 카드</a>
+          <a href="#guestbook-section">방명록</a>
+          <a href="#likes-section">좋아요</a>
+        </nav>
+      </section>
+
+      <!-- 프로필 -->
+      <section class="sheet" id="profile-section">
+        <h2 class="section-title">PROFILE</h2>
+        <div class="fields">
+          <div class="field wide">
+            <label for="pf-photo">프로필 사진</label>
+            <div class="photo photo-preview" id="pf-photo-preview"></div>
+            <input type="file" id="pf-photo" accept="image/png,image/jpeg,image/webp,image/gif">
+            <p class="hint">PNG·JPG·WEBP·GIF, 10MB까지. 고른 사진은 저장 버튼을 누를 때 올라가요.</p>
+          </div>
+          <div class="field"><label for="pf-name">이름</label><input type="text" id="pf-name"></div>
+          <div class="field"><label for="pf-title">직함</label><input type="text" id="pf-title"></div>
+          <div class="field"><label for="pf-career_badge">경력 배지</label><input type="text" id="pf-career_badge"></div>
+          <div class="field"><label for="pf-email">이메일</label><input type="text" id="pf-email"></div>
+          <div class="field"><label for="pf-phone">연락처</label><input type="text" id="pf-phone"></div>
+          <div class="field"><label for="pf-location">위치</label><input type="text" id="pf-location"></div>
+          <div class="field wide"><label for="pf-headline">한 줄 소개 (이름이 들어가면 파란 밑줄)</label><input type="text" id="pf-headline"></div>
+          <div class="field wide"><label for="pf-intro">소개 글</label><textarea id="pf-intro"></textarea></div>
+          <div class="field"><label for="pf-education">EDUCATION</label><textarea id="pf-education"></textarea></div>
+          <div class="field"><label for="pf-skills">SKILLS &amp; TOOLS</label><textarea id="pf-skills"></textarea></div>
+          <div class="field"><label for="pf-experience">EXPERIENCE</label><textarea id="pf-experience"></textarea></div>
+          <div class="field"><label for="pf-quote">맨 아래 인용</label><textarea id="pf-quote"></textarea></div>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn-primary" id="pf-save">프로필 저장</button>
+          <span class="msg" id="pf-msg"></span>
+        </div>
+      </section>
+
+      <!-- 포트폴리오 카드 -->
+      <section class="sheet" id="projects-section">
+        <h2 class="section-title">PORTFOLIO CARDS</h2>
+
+        <div class="edit-box hidden" id="pj-editor">
+          <h3 id="pj-editor-title">카드 추가</h3>
+          <div class="fields">
+            <div class="field"><label for="pj-number">번호 (예: 01)</label><input type="text" id="pj-number"></div>
+            <div class="field"><label for="pj-category">분류</label><input type="text" id="pj-category"></div>
+            <div class="field wide"><label for="pj-title">제목 (꼭 적기)</label><input type="text" id="pj-title"></div>
+            <div class="field wide"><label for="pj-description">설명</label><textarea id="pj-description"></textarea></div>
+            <div class="field wide"><label for="pj-tags">태그 (쉼표로 나누기, 예: 총괄 PM, UI/UX)</label><input type="text" id="pj-tags"></div>
+            <div class="field">
+              <label for="pj-thumbnail">썸네일 이미지</label>
+              <input type="file" id="pj-thumbnail" accept="image/png,image/jpeg,image/webp,image/gif">
+              <p class="hint">PNG·JPG·WEBP·GIF, 10MB까지</p>
+              <div class="current-file" id="pj-thumbnail-current"></div>
+            </div>
+            <div class="field">
+              <label for="pj-file">첨부 파일</label>
+              <input type="file" id="pj-file" accept="application/pdf,image/png,image/jpeg,image/webp,image/gif">
+              <p class="hint">PDF 또는 이미지, 10MB까지</p>
+              <div class="current-file" id="pj-file-current"></div>
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" class="btn btn-primary" id="pj-save">저장</button>
+            <button type="button" class="btn" id="pj-cancel">취소</button>
+            <span class="msg" id="pj-msg"></span>
+          </div>
+        </div>
+
+        <div class="actions" style="margin: 0 0 16px;">
+          <button type="button" class="btn btn-primary" id="pj-add">+ 카드 추가</button>
+          <span class="msg" id="pj-list-msg"></span>
+        </div>
+        <div class="row-list" id="pj-list"><p class="status">불러오는 중…</p></div>
+      </section>
+
+      <!-- 방명록 -->
+      <section class="sheet" id="guestbook-section">
+        <h2 class="section-title">GUESTBOOK</h2>
+        <p class="msg" id="gb-msg"></p>
+        <div class="row-list" id="gb-admin-list"><p class="status">불러오는 중…</p></div>
+      </section>
+
+      <!-- 좋아요 -->
+      <section class="sheet" id="likes-section">
+        <h2 class="section-title">LIKES</h2>
+        <p class="msg" id="lk-msg"></p>
+        <div class="row-list" id="lk-list"><p class="status">불러오는 중…</p></div>
+      </section>
+
+    </div>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>
