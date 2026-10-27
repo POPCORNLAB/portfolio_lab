@@ -1,0 +1,451 @@
+/* ===== 색과 기본값 ===== */
+:root {
+  --bg: #eef0f3;          /* 연회색 바탕 */
+  --sheet: #ffffff;       /* 흰 카드 */
+  --blue: #2563eb;        /* 파란 강조색 */
+  --blue-soft: #e8efff;
+  --text: #1a1d23;
+  --gray: #6b7280;
+  --gray-light: #9ca3af;
+  --line: #e5e7eb;
+  --tag-bg: #f1f3f6;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3, p, ul, blockquote { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* ===== 흰 큰 카드 ===== */
+.sheet {
+  background: var(--sheet);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(17, 24, 39, 0.06);
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  overflow: hidden;
+}
+
+/* ===== 왼쪽 ABOUT ME ===== */
+.about {
+  padding: 48px 36px;
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.label {
+  align-self: flex-start;
+  font-size: 13px;
+  letter-spacing: 0.15em;
+  color: var(--gray-light);
+  margin-bottom: 28px;
+}
+
+.photo {
+  width: 160px;
+  height: 160px;
+  border-radius: 28px;
+  background: #d9dde3;   /* 사진이 없을 때 회색 자리 */
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.name {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.job-title {
+  color: var(--blue);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.badge {
+  margin-top: 16px;
+  padding: 6px 16px;
+  border: 1.5px solid var(--blue);
+  border-radius: 999px;
+  color: var(--blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+.badge:empty { display: none; }
+
+.contacts {
+  margin-top: 36px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: left;
+}
+.contacts li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.contacts small {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--gray-light);
+  font-weight: 700;
+}
+.contacts span:not(.icon-circle) {
+  font-size: 14px;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.icon-circle {
+  flex: none;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.icon-circle svg { stroke: #fff; }
+
+/* ===== 오른쪽 PORTFOLIO ===== */
+.content {
+  padding: 48px 48px 40px;
+  min-width: 0;
+}
+
+.section-title {
+  font-size: 34px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  padding-left: 16px;
+  border-left: 6px solid var(--blue);
+  line-height: 1.1;
+  margin-bottom: 28px;
+}
+
+.headline {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.headline .hl-name {
+  color: var(--blue);
+  text-decoration: underline;
+  text-decoration-color: var(--blue);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 6px;
+}
+
+.intro {
+  margin-top: 14px;
+  color: var(--gray);
+  white-space: pre-line;
+}
+
+.info-row {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.info h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--blue);
+  margin-bottom: 8px;
+}
+.info p {
+  font-size: 14px;
+  white-space: pre-line;
+}
+
+/* ===== PORTFOLIO HIGHLIGHTS ===== */
+.highlights {
+  margin-top: 32px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 24px;
+}
+.highlights-title {
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  margin-bottom: 18px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(17, 24, 39, 0.08);
+}
+
+.card-link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  flex: 1;
+}
+
+/* 브라우저 창 모양 썸네일 */
+.browser {
+  background: #f3f4f6;
+  border-bottom: 1px solid var(--line);
+}
+.browser-bar {
+  display: flex;
+  gap: 5px;
+  padding: 8px 10px;
+}
+.browser-bar i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #cfd4db;
+}
+.browser-bar i:nth-child(1) { background: #ff6b6b; }
+.browser-bar i:nth-child(2) { background: #ffc94d; }
+.browser-bar i:nth-child(3) { background: #4cd07d; }
+.browser-view {
+  aspect-ratio: 16 / 10;
+  background: #d9dde3;
+}
+.browser-view img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-body { padding: 14px 14px 6px; }
+.card-meta {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--blue);
+}
+.card-meta b { margin-right: 6px; }
+.card-title {
+  margin-top: 4px;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+.card-desc {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--gray);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* 설명은 두 줄까지 */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 14px 14px;
+}
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.tags span {
+  font-size: 11px;
+  background: var(--tag-bg);
+  color: var(--gray);
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.like {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--gray);
+  cursor: pointer;
+}
+.like svg { width: 15px; height: 15px; }
+.like:hover { border-color: var(--blue); color: var(--blue); }
+.like.liked {
+  color: #e11d48;
+  border-color: #fecdd3;
+  background: #fff1f2;
+  cursor: default;
+}
+.like.liked svg { fill: currentColor; }
+
+.quote {
+  margin-top: 32px;
+  font-style: italic;
+  color: var(--gray);
+  text-align: center;
+  font-size: 16px;
+}
+.quote:not(:empty)::before { content: "“"; }
+.quote:not(:empty)::after { content: "”"; }
+
+.status {
+  color: var(--gray-light);
+  font-size: 14px;
+  grid-column: 1 / -1;
+}
+
+/* ===== 방명록 ===== */
+.guestbook {
+  display: block;
+  margin-top: 32px;
+  padding: 40px 48px;
+}
+
+.gb-form {
+  display: grid;
+  grid-template-columns: 180px 1fr auto;
+  gap: 10px;
+}
+.gb-form input {
+  font: inherit;
+  font-size: 14px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #fafbfc;
+  min-width: 0;
+}
+.gb-form input:focus {
+  outline: none;
+  border-color: var(--blue);
+  background: #fff;
+}
+.gb-form button {
+  font: inherit;
+  font-weight: 700;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  background: var(--blue);
+  color: #fff;
+  cursor: pointer;
+}
+.gb-form button:disabled { opacity: 0.6; cursor: default; }
+
+.gb-notice {
+  min-height: 1.6em;
+  margin-top: 6px;
+  font-size: 13px;
+  color: #e11d48;
+}
+
+.gb-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.gb-list li:not(.status) {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+.gb-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+.gb-head b { color: var(--blue); }
+.gb-head time { color: var(--gray-light); }
+.gb-text {
+  margin-top: 4px;
+  font-size: 14px;
+  word-break: break-word;
+}
+
+/* ===== 화면 폭에 따라 ===== */
+@media (max-width: 1100px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 860px) {
+  .page { padding: 24px 16px; }
+  .sheet { grid-template-columns: 1fr; }
+  .about {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding: 36px 24px;
+  }
+  .contacts { max-width: 360px; }
+  .content { padding: 36px 24px; }
+  .guestbook { padding: 32px 24px; }
+}
+
+@media (max-width: 600px) {
+  .section-title { font-size: 28px; }
+  .headline { font-size: 19px; }
+  .info-row { grid-template-columns: 1fr; gap: 18px; }
+  .highlights { padding: 16px; }
+  .cards { grid-template-columns: 1fr; }
+  .gb-form { grid-template-columns: 1fr; }
+}
